@@ -5,45 +5,50 @@ import * as argon from 'argon2';
 const userSchema: Schema<UserEntity> = new Schema({
   userName: {
     type: String,
-    required: true,
+    required: [true, 'userName is required'],
     unique: true,
-  },
-  firstName: {
-    type: String,
-    required: true,
-  },
-  lastName: {
-    type: String,
-    required: true,
+    validate: {
+      validator: (username: string) => {
+        return username.length >= 4;
+      },
+      message: 'Invalid username',
+    },
   },
   password: {
     type: String,
-    required: true,
+    required: [true, 'password is required'],
+    validate: {
+      validator: (password: string) => {
+        return password.length >= 8;
+      },
+      message: 'Invalid password',
+    },
   },
   email: {
     type: String,
     required: true,
-  },
-  createdAt: {
-    type: Date,
+    unique: true,
+    validate: {
+      validator: (email: string) => {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
+      },
+      message: 'Invalid email address',
+    },
   },
 });
 
-userSchema.pre(
-  'save',
-  async function (this: UserEntity, next): Promise<void> {
-    if (!this.isModified('password')) return next();
+userSchema.pre('save', async function (this: UserEntity, next): Promise<void> {
+  if (!this.isModified('password')) return next();
 
-    try {
-      this.password = await argon.hash(this.password.toString());
-      this.createdAt = new Date();
-      next();
-    } catch (error) {
-      console.error(`[ERROR] ${error}`);
-      return next(error);
-    }
-  },
-);
+  try {
+    this.password = await argon.hash(this.password.toString());
+    next();
+  } catch (error) {
+    console.error(`[ERROR] ${error}`);
+    return next(error);
+  }
+});
 
 userSchema.pre(
   'findOneAndUpdate',

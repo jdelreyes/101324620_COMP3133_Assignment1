@@ -22,8 +22,6 @@ async function register(request: Request, response: Response) {
       request.body.userName,
       request.body.firstName,
       request.body.lastName,
-      request.body.password,
-      request.body.email,
     );
 
     if (!newUser) return response.status(400).send({});

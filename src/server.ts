@@ -11,6 +11,8 @@ application.use(express.urlencoded({ extended: true }));
 dotenv.config();
 
 // routes
+import AuthRoute from './routes/auth.route';
+application.use('/auth', AuthRoute)
 
 // db
 const uri: string = `mongodb://${process.env.MONGODB_USERNAME}:${process.env.MONGODB_PASSWORD}@${process.env.MONGODB_NAME}:27017/`;

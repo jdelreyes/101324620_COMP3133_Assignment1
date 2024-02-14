@@ -3,18 +3,10 @@ import UserModel from '../models/user.model';
 import * as argon from 'argon2';
 import jwt from 'jsonwebtoken';
 
-async function register(
-  userName: string,
-  firstName: string,
-  lastName: string,
-  password: string,
-  email: string,
-) {
+async function register(userName: string, password: string, email: string) {
   try {
     const newUser: UserEntity = new UserModel({
       userName,
-      firstName,
-      lastName,
       password,
       email,
     });

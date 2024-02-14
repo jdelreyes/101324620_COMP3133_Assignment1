@@ -11,7 +11,7 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: password
     restart: unless-stopped
     networks:
-      - comp3123-local
+      - comp3133-local
 
 networks:
-  comp3123-local:
+  comp3133-local:

@@ -1,18 +1,15 @@
-import express, { Application, Request, Response } from 'express';
+import express, { Express } from 'express';
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
+import { ApolloServer, ExpressContext } from 'apollo-server-express';
 
 const SERVER_PORT: number = 8000;
 
-// app config
-const application: Application = express();
-application.use(express.json());
-application.use(express.urlencoded({ extended: true }));
 dotenv.config();
 
-// routes
-import AuthRoute from './routes/auth.route';
-application.use('/auth', AuthRoute)
+// app config
+const app: Express = express();
+const apolloServer: ApolloServer<ExpressContext> = new ApolloServer({});
 
 // db
 const uri: string = `mongodb://${process.env.MONGODB_USERNAME}:${process.env.MONGODB_PASSWORD}@${process.env.MONGODB_NAME}:27017/`;
@@ -27,10 +24,14 @@ mongoose
     process.exit();
   });
 
-application.get('/', (request: Request, response: Response): void => {
-  response.status(200).send({});
-});
-
-application.listen(SERVER_PORT, (): void => {
+app.listen(SERVER_PORT, (): void => {
   console.log(`[LOG] Server is running at port ${SERVER_PORT}`);
 });
+
+const startServer = async () => {
+  await apolloServer.start();
+  apolloServer.applyMiddleware({ app });
+  console.log(`[LOG] Apollo server is running`);
+};
+
+startServer();

@@ -2,6 +2,9 @@ import express, { Express } from 'express';
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import { ApolloServer, ExpressContext } from 'apollo-server-express';
+import { context } from './context';
+import { schema } from './schema';
+import { ApolloServerPluginLandingPageGraphQLPlayground } from 'apollo-server-core';
 
 const SERVER_PORT: number = 8000;
 
@@ -9,7 +12,11 @@ dotenv.config();
 
 // app config
 const app: Express = express();
-const apolloServer: ApolloServer<ExpressContext> = new ApolloServer({});
+const apolloServer: ApolloServer<ExpressContext> = new ApolloServer({
+  context: context,
+  plugins: [ApolloServerPluginLandingPageGraphQLPlayground()],
+  schema: schema,
+});
 
 // db
 const uri: string = `mongodb://${process.env.MONGODB_USERNAME}:${process.env.MONGODB_PASSWORD}@${process.env.MONGODB_NAME}:27017/`;

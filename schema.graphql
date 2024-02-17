@@ -7,13 +7,22 @@ type Auth {
   user: User!
 }
 
+type Employee {
+  _id: String!
+  email: String!
+  firstName: String!
+  gender: String!
+  lastName: String!
+  salary: Float!
+}
+
 type Mutation {
   login(password: String!, userName: String!): Auth!
   signup(email: String!, password: String!, userName: String!): Auth!
 }
 
 type Query {
-  ok: Boolean!
+  getEmployees: [Employee!]!
 }
 
 type User {

@@ -32,6 +32,14 @@ export interface NexusGenObjects {
     token: string; // String!
     user: NexusGenRootTypes['User']; // User!
   }
+  Employee: { // root type
+    _id: string; // String!
+    email: string; // String!
+    firstName: string; // String!
+    gender: string; // String!
+    lastName: string; // String!
+    salary: number; // Float!
+  }
   Mutation: {};
   Query: {};
   User: { // root type
@@ -57,12 +65,20 @@ export interface NexusGenFieldTypes {
     token: string; // String!
     user: NexusGenRootTypes['User']; // User!
   }
+  Employee: { // field return type
+    _id: string; // String!
+    email: string; // String!
+    firstName: string; // String!
+    gender: string; // String!
+    lastName: string; // String!
+    salary: number; // Float!
+  }
   Mutation: { // field return type
     login: NexusGenRootTypes['Auth']; // Auth!
     signup: NexusGenRootTypes['Auth']; // Auth!
   }
   Query: { // field return type
-    ok: boolean; // Boolean!
+    getEmployees: NexusGenRootTypes['Employee'][]; // [Employee!]!
   }
   User: { // field return type
     _id: string; // String!
@@ -77,12 +93,20 @@ export interface NexusGenFieldTypeNames {
     token: 'String'
     user: 'User'
   }
+  Employee: { // field return type name
+    _id: 'String'
+    email: 'String'
+    firstName: 'String'
+    gender: 'String'
+    lastName: 'String'
+    salary: 'Float'
+  }
   Mutation: { // field return type name
     login: 'Auth'
     signup: 'Auth'
   }
   Query: { // field return type name
-    ok: 'Boolean'
+    getEmployees: 'Employee'
   }
   User: { // field return type name
     _id: 'String'

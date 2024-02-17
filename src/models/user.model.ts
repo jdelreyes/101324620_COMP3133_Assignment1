@@ -25,7 +25,7 @@ const userSchema: Schema<UserEntity> = new Schema({
   },
   email: {
     type: String,
-    required: true,
+    required: [true, 'email is required'],
     unique: true,
     validate: {
       validator: (email: string) => {

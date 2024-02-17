@@ -1,7 +1,8 @@
 import express, { Express } from 'express';
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
-import { ApolloServer, ExpressContext } from 'apollo-server-express';
+import { ApolloServer } from 'apollo-server-express';
+import { ApolloServerPluginLandingPageGraphQLPlayground } from 'apollo-server-core';
 import { context } from './context';
 import { schema } from './schema';
 
@@ -14,6 +15,7 @@ const app: Express = express();
 const apolloServer = new ApolloServer({
   context,
   schema,
+  plugins: [ApolloServerPluginLandingPageGraphQLPlayground()],
 });
 
 // db
@@ -30,13 +32,17 @@ mongoose
   });
 
 app.listen(SERVER_PORT, (): void => {
-  console.log(`[LOG] Server is running at port ${SERVER_PORT}`);
+  console.log(
+    `[LOG] Express Server is running at port http://localhost:${SERVER_PORT}`,
+  );
 });
 
-const startServer = async () => {
+const startApolloServer = async () => {
   await apolloServer.start();
   apolloServer.applyMiddleware({ app });
-  console.log(`[LOG] Apollo server is running`);
+  console.log(
+    `[LOG] Apollo server is running at port http://localhost:${SERVER_PORT}/graphql`,
+  );
 };
 
-startServer();
+startApolloServer();

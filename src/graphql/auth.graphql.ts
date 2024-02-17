@@ -26,7 +26,6 @@ export const AuthMutation = extendType({
       async resolve(parent, args, ctx): Promise<NexusGenObjects['Auth']> {
         const { userName, email } = args;
         const password = await argon.hash(args.password);
-        console.log(password, args.password);
         const user = await ctx.user.create({ userName, password, email });
 
         if (!user) throw new Error();
@@ -49,8 +48,6 @@ export const AuthMutation = extendType({
         const user = await ctx.user.findOne({ userName: userName });
 
         if (!user) throw new Error();
-
-        console.log(user.password, password);
 
         const passwordMatches: boolean = await argon.verify(
           user.password,

@@ -13,9 +13,9 @@ dotenv.config();
 // app config
 const app: Express = express();
 const apolloServer: ApolloServer<ExpressContext> = new ApolloServer({
-  context: context,
+  context,
+  schema,
   plugins: [ApolloServerPluginLandingPageGraphQLPlayground()],
-  schema: schema,
 });
 
 // db

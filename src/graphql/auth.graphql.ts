@@ -19,19 +19,51 @@ export const AuthMutation = extendType({
     t.nonNull.field('signup', {
       type: 'Auth',
       args: {
-        userName: nonNull(stringArg()),
         email: nonNull(stringArg()),
+        userName: nonNull(stringArg()),
         password: nonNull(stringArg()),
       },
       async resolve(parent, args, ctx): Promise<NexusGenObjects['Auth']> {
         const { userName, email } = args;
-        const password = argon.hash(args.password);
+        const password = await argon.hash(args.password);
+        console.log(password, args.password);
         const user = await ctx.user.create({ userName, password, email });
 
         if (!user) throw new Error();
-        const token = jwt.sign({ userId: user.id }, process.env.JSON_TOKEN);
+        const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET);
 
         if (!token) throw new Error();
+        return { token, user };
+      },
+    });
+
+    t.nonNull.field('login', {
+      type: 'Auth',
+      args: {
+        userName: nonNull(stringArg()),
+        password: nonNull(stringArg()),
+      },
+      async resolve(parent, args, ctx): Promise<NexusGenObjects['Auth']> {
+        const { userName, password } = args;
+
+        const user = await ctx.user.findOne({ userName: userName });
+
+        if (!user) throw new Error();
+
+        console.log(user.password, password);
+
+        const passwordMatches: boolean = await argon.verify(
+          user.password,
+          password,
+        );
+
+        if (!passwordMatches) throw new Error();
+
+        const token: string = jwt.sign(
+          { userId: user._id },
+          process.env.JWT_SECRET,
+        );
+
         return { token, user };
       },
     });

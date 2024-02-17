@@ -38,18 +38,6 @@ const userSchema: Schema<UserEntity> = new Schema({
   },
 });
 
-userSchema.pre('save', async function (this: UserEntity, next): Promise<void> {
-  if (!this.isModified('password')) return next();
-
-  try {
-    this.password = await argon.hash(this.password.toString());
-    next();
-  } catch (error) {
-    console.error(`[ERROR] ${error}`);
-    return next(error);
-  }
-});
-
 userSchema.pre(
   'findOneAndUpdate',
   async function (this: { _update: UserEntity }, next): Promise<void> {

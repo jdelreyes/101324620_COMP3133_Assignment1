@@ -1,4 +1,4 @@
-import { objectType, extendType } from 'nexus';
+import { objectType, extendType, stringArg, nonNull } from 'nexus';
 
 export const Employee = objectType({
   name: 'Employee',
@@ -18,7 +18,17 @@ export const EmployeeQuery = extendType({
     t.nonNull.list.nonNull.field('getEmployees', {
       type: 'Employee',
       async resolve(parent, args, ctx) {
-        return ctx.employee.find();
+        return await ctx.employee.find();
+      },
+    });
+
+    t.nonNull.field('getEmployee', {
+      type: 'Employee',
+      args: {
+        _id: nonNull(stringArg()),
+      },
+      async resolve(parent, args, ctx) {
+        return await ctx.employee.findOne({ _id: args._id });
       },
     });
   },

@@ -78,6 +78,7 @@ export interface NexusGenFieldTypes {
     signup: NexusGenRootTypes['Auth']; // Auth!
   }
   Query: { // field return type
+    getEmployee: NexusGenRootTypes['Employee']; // Employee!
     getEmployees: NexusGenRootTypes['Employee'][]; // [Employee!]!
   }
   User: { // field return type
@@ -106,6 +107,7 @@ export interface NexusGenFieldTypeNames {
     signup: 'Auth'
   }
   Query: { // field return type name
+    getEmployee: 'Employee'
     getEmployees: 'Employee'
   }
   User: { // field return type name
@@ -126,6 +128,11 @@ export interface NexusGenArgTypes {
       email: string; // String!
       password: string; // String!
       userName: string; // String!
+    }
+  }
+  Query: {
+    getEmployee: { // args
+      _id: string; // String!
     }
   }
 }

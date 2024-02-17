@@ -22,6 +22,7 @@ type Mutation {
 }
 
 type Query {
+  getEmployee(_id: String!): Employee!
   getEmployees: [Employee!]!
 }
 

@@ -4,7 +4,6 @@ import mongoose from 'mongoose';
 import { ApolloServer, ExpressContext } from 'apollo-server-express';
 import { context } from './context';
 import { schema } from './schema';
-import { ApolloServerPluginLandingPageGraphQLPlayground } from 'apollo-server-core';
 
 const SERVER_PORT: number = 8000;
 
@@ -12,10 +11,9 @@ dotenv.config();
 
 // app config
 const app: Express = express();
-const apolloServer: ApolloServer<ExpressContext> = new ApolloServer({
+const apolloServer = new ApolloServer({
   context,
   schema,
-  rootValue: '/'
 });
 
 // db

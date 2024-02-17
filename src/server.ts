@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import { ApolloServer } from 'apollo-server-express';
 import { ApolloServerPluginLandingPageGraphQLPlayground } from 'apollo-server-core';
+
 import { context } from './context';
 import { schema } from './schema';
 
@@ -23,7 +24,7 @@ const uri: string = `mongodb://${process.env.MONGODB_USERNAME}:${process.env.MON
 
 mongoose
   .connect(uri)
-  .then(async (): Promise<void> => {
+  .then((): void => {
     console.log('[LOG] Connected to MongoDB');
   })
   .catch((err): void => {
@@ -37,7 +38,7 @@ app.listen(SERVER_PORT, (): void => {
   );
 });
 
-const startApolloServer = async () => {
+const startApolloServer = async (): Promise<void> => {
   await apolloServer.start();
   apolloServer.applyMiddleware({ app });
   console.log(

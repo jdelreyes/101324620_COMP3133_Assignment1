@@ -2,8 +2,14 @@ import { extendType, objectType, nonNull, stringArg, idArg } from 'nexus';
 import * as jwt from 'jsonwebtoken';
 import * as argon from 'argon2';
 import { NexusGenObjects } from '../../nexus-typegen';
+import {
+  NexusExtendTypeDef,
+  NexusObjectTypeDef,
+  ObjectDefinitionBlock,
+} from 'nexus/dist/core';
+import { UserEntity } from '../entities';
 
-export const Auth = objectType({
+export const Auth: NexusObjectTypeDef<'Auth'> = objectType({
   name: 'Auth',
   definition(t) {
     t.nonNull.string('token');
@@ -13,9 +19,9 @@ export const Auth = objectType({
   },
 });
 
-export const AuthMutation = extendType({
+export const AuthMutation: NexusExtendTypeDef<any> = extendType({
   type: 'Mutation',
-  definition(t) {
+  definition(t: ObjectDefinitionBlock<'Mutation'>): void {
     t.nonNull.field('signup', {
       type: 'Auth',
       args: {
@@ -25,11 +31,18 @@ export const AuthMutation = extendType({
       },
       async resolve(parent, args, ctx): Promise<NexusGenObjects['Auth']> {
         const { userName, email } = args;
-        const password = await argon.hash(args.password);
-        const user = await ctx.user.create({ userName, password, email });
+        const password: string = await argon.hash(args.password);
+        const user = await ctx.user.create({
+          userName,
+          password,
+          email,
+        });
 
         if (!user) throw new Error();
-        const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET);
+        const token: string = jwt.sign(
+          { userId: user._id },
+          process.env.JWT_SECRET,
+        );
 
         if (!token) throw new Error();
         return { token, user };

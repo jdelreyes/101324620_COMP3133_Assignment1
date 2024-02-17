@@ -1,8 +1,9 @@
-import { objectType, extendType } from 'nexus';
+import { objectType } from 'nexus';
+import { NexusObjectTypeDef, ObjectDefinitionBlock } from 'nexus/dist/core';
 
-export const User = objectType({
+export const User: NexusObjectTypeDef<'User'> = objectType({
   name: 'User',
-  definition(t) {
+  definition(t: ObjectDefinitionBlock<'User'>): void {
     t.nonNull.string('_id');
     t.nonNull.string('userName');
     t.nonNull.string('email');

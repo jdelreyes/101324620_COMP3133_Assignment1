@@ -1,6 +1,7 @@
 import { objectType, extendType, stringArg, nonNull, floatArg } from 'nexus';
+import { NexusExtendTypeDef, NexusObjectTypeDef, ObjectDefinitionBlock } from 'nexus/dist/core';
 
-export const Employee = objectType({
+export const Employee: NexusObjectTypeDef<'Employee'> = objectType({
   name: 'Employee',
   definition(t) {
     t.nonNull.string('_id');
@@ -12,13 +13,13 @@ export const Employee = objectType({
   },
 });
 
-export const EmployeeQuery = extendType({
+export const EmployeeQuery: NexusExtendTypeDef<any> = extendType({
   type: 'Query',
-  definition(t) {
+  definition(t: ObjectDefinitionBlock<"Query">): void {
     t.nonNull.list.nonNull.field('getEmployees', {
       type: 'Employee',
       async resolve(parent, args, ctx) {
-        if (!ctx.userId) throw new Error('Unauthorized')
+        if (!ctx.userId) throw new Error('Unauthorized');
 
         return await ctx.employee.find();
       },
@@ -30,7 +31,7 @@ export const EmployeeQuery = extendType({
         _id: nonNull(stringArg()),
       },
       async resolve(parent, args, ctx) {
-        if (!ctx.userId) throw new Error('Unauthorized')
+        if (!ctx.userId) throw new Error('Unauthorized');
 
         return await ctx.employee.findOne({ _id: args._id });
       },
@@ -51,7 +52,7 @@ export const EmployeeMutation = extendType({
         salary: nonNull(floatArg()),
       },
       async resolve(parent, args, ctx) {
-        if (!ctx.userId) throw new Error('Unauthorized')
+        if (!ctx.userId) throw new Error('Unauthorized');
         const { firstName, lastName, email, gender, salary } = args;
 
         return await ctx.employee.create({
@@ -75,7 +76,7 @@ export const EmployeeMutation = extendType({
         salary: floatArg(),
       },
       async resolve(parent, args, ctx) {
-        if (!ctx.userId) throw new Error('Unauthorized')
+        if (!ctx.userId) throw new Error('Unauthorized');
         const { _id, firstName, lastName, email, gender, salary } = args;
         return await ctx.employee.findOneAndUpdate(
           { _id },
@@ -91,10 +92,10 @@ export const EmployeeMutation = extendType({
         _id: nonNull(stringArg()),
       },
       async resolve(parent, args, ctx) {
-        if (!ctx.userId) throw new Error('Unauthorized')
-        const _id = args._id
-        return await ctx.employee.findOneAndDelete({_id})
-      }
+        if (!ctx.userId) throw new Error('Unauthorized');
+        const _id = args._id;
+        return await ctx.employee.findOneAndDelete({ _id });
+      },
     });
   },
 });

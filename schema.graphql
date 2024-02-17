@@ -18,7 +18,7 @@ type Employee {
 
 type Mutation {
   createEmployee(email: String!, firstName: String!, gender: String!, lastName: String!, salary: Float!): Employee!
-  deleteEmployee(_id: String!): Mutation!
+  deleteEmployee(_id: String!): Employee!
   login(password: String!, userName: String!): Auth!
   signup(email: String!, password: String!, userName: String!): Auth!
   updateEmployee(_id: String!, email: String, firstName: String, gender: String, lastName: String, salary: Float): Employee!

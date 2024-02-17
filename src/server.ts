@@ -15,7 +15,7 @@ const app: Express = express();
 const apolloServer: ApolloServer<ExpressContext> = new ApolloServer({
   context,
   schema,
-  plugins: [ApolloServerPluginLandingPageGraphQLPlayground()],
+  rootValue: '/'
 });
 
 // db

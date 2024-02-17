@@ -18,6 +18,8 @@ export const EmployeeQuery = extendType({
     t.nonNull.list.nonNull.field('getEmployees', {
       type: 'Employee',
       async resolve(parent, args, ctx) {
+        if (!ctx.userId) throw new Error('Unauthorized')
+
         return await ctx.employee.find();
       },
     });
@@ -28,6 +30,8 @@ export const EmployeeQuery = extendType({
         _id: nonNull(stringArg()),
       },
       async resolve(parent, args, ctx) {
+        if (!ctx.userId) throw new Error('Unauthorized')
+
         return await ctx.employee.findOne({ _id: args._id });
       },
     });
@@ -47,6 +51,7 @@ export const EmployeeMutation = extendType({
         salary: nonNull(floatArg()),
       },
       async resolve(parent, args, ctx) {
+        if (!ctx.userId) throw new Error('Unauthorized')
         const { firstName, lastName, email, gender, salary } = args;
 
         return await ctx.employee.create({
@@ -70,6 +75,7 @@ export const EmployeeMutation = extendType({
         salary: floatArg(),
       },
       async resolve(parent, args, ctx) {
+        if (!ctx.userId) throw new Error('Unauthorized')
         const { _id, firstName, lastName, email, gender, salary } = args;
         return await ctx.employee.findOneAndUpdate(
           { _id },
@@ -80,11 +86,12 @@ export const EmployeeMutation = extendType({
     });
 
     t.nonNull.field('deleteEmployee', {
-      type: 'Mutation',
+      type: 'Employee',
       args: {
         _id: nonNull(stringArg()),
       },
       async resolve(parent, args, ctx) {
+        if (!ctx.userId) throw new Error('Unauthorized')
         const _id = args._id
         return await ctx.employee.findOneAndDelete({_id})
       }

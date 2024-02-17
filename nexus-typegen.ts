@@ -75,7 +75,7 @@ export interface NexusGenFieldTypes {
   }
   Mutation: { // field return type
     createEmployee: NexusGenRootTypes['Employee']; // Employee!
-    deleteEmployee: NexusGenRootTypes['Mutation']; // Mutation!
+    deleteEmployee: NexusGenRootTypes['Employee']; // Employee!
     login: NexusGenRootTypes['Auth']; // Auth!
     signup: NexusGenRootTypes['Auth']; // Auth!
     updateEmployee: NexusGenRootTypes['Employee']; // Employee!
@@ -107,7 +107,7 @@ export interface NexusGenFieldTypeNames {
   }
   Mutation: { // field return type name
     createEmployee: 'Employee'
-    deleteEmployee: 'Mutation'
+    deleteEmployee: 'Employee'
     login: 'Auth'
     signup: 'Auth'
     updateEmployee: 'Employee'

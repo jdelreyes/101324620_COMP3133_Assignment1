@@ -74,8 +74,11 @@ export interface NexusGenFieldTypes {
     salary: number; // Float!
   }
   Mutation: { // field return type
+    createEmployee: NexusGenRootTypes['Employee']; // Employee!
+    deleteEmployee: NexusGenRootTypes['Mutation']; // Mutation!
     login: NexusGenRootTypes['Auth']; // Auth!
     signup: NexusGenRootTypes['Auth']; // Auth!
+    updateEmployee: NexusGenRootTypes['Employee']; // Employee!
   }
   Query: { // field return type
     getEmployee: NexusGenRootTypes['Employee']; // Employee!
@@ -103,8 +106,11 @@ export interface NexusGenFieldTypeNames {
     salary: 'Float'
   }
   Mutation: { // field return type name
+    createEmployee: 'Employee'
+    deleteEmployee: 'Mutation'
     login: 'Auth'
     signup: 'Auth'
+    updateEmployee: 'Employee'
   }
   Query: { // field return type name
     getEmployee: 'Employee'
@@ -120,6 +126,16 @@ export interface NexusGenFieldTypeNames {
 
 export interface NexusGenArgTypes {
   Mutation: {
+    createEmployee: { // args
+      email: string; // String!
+      firstName: string; // String!
+      gender: string; // String!
+      lastName: string; // String!
+      salary: number; // Float!
+    }
+    deleteEmployee: { // args
+      _id: string; // String!
+    }
     login: { // args
       password: string; // String!
       userName: string; // String!
@@ -128,6 +144,14 @@ export interface NexusGenArgTypes {
       email: string; // String!
       password: string; // String!
       userName: string; // String!
+    }
+    updateEmployee: { // args
+      _id: string; // String!
+      email?: string | null; // String
+      firstName?: string | null; // String
+      gender?: string | null; // String
+      lastName?: string | null; // String
+      salary?: number | null; // Float
     }
   }
   Query: {

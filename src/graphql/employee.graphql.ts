@@ -1,4 +1,4 @@
-import { objectType, extendType, stringArg, nonNull } from 'nexus';
+import { objectType, extendType, stringArg, nonNull, floatArg } from 'nexus';
 
 export const Employee = objectType({
   name: 'Employee',
@@ -30,6 +30,64 @@ export const EmployeeQuery = extendType({
       async resolve(parent, args, ctx) {
         return await ctx.employee.findOne({ _id: args._id });
       },
+    });
+  },
+});
+
+export const EmployeeMutation = extendType({
+  type: 'Mutation',
+  definition(t) {
+    t.nonNull.field('createEmployee', {
+      type: 'Employee',
+      args: {
+        firstName: nonNull(stringArg()),
+        lastName: nonNull(stringArg()),
+        email: nonNull(stringArg()),
+        gender: nonNull(stringArg()),
+        salary: nonNull(floatArg()),
+      },
+      async resolve(parent, args, ctx) {
+        const { firstName, lastName, email, gender, salary } = args;
+
+        return await ctx.employee.create({
+          firstName,
+          lastName,
+          email,
+          gender,
+          salary,
+        });
+      },
+    });
+
+    t.nonNull.field('updateEmployee', {
+      type: 'Employee',
+      args: {
+        _id: nonNull(stringArg()),
+        firstName: stringArg(),
+        lastName: stringArg(),
+        email: stringArg(),
+        gender: stringArg(),
+        salary: floatArg(),
+      },
+      async resolve(parent, args, ctx) {
+        const { _id, firstName, lastName, email, gender, salary } = args;
+        return await ctx.employee.findOneAndUpdate(
+          { _id },
+          { firstName, lastName, email, gender, salary },
+          { new: true },
+        );
+      },
+    });
+
+    t.nonNull.field('deleteEmployee', {
+      type: 'Mutation',
+      args: {
+        _id: nonNull(stringArg()),
+      },
+      async resolve(parent, args, ctx) {
+        const _id = args._id
+        return await ctx.employee.findOneAndDelete({_id})
+      }
     });
   },
 });

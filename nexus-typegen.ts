@@ -17,6 +17,7 @@ export interface NexusGenInputs {
 }
 
 export interface NexusGenEnums {
+  Gender: "female" | "male" | "other"
 }
 
 export interface NexusGenScalars {
@@ -33,17 +34,17 @@ export interface NexusGenObjects {
     user: NexusGenRootTypes['User']; // User!
   }
   Employee: { // root type
-    _id: string; // String!
+    _id: string; // ID!
     email: string; // String!
     firstName: string; // String!
-    gender: string; // String!
+    gender: NexusGenEnums['Gender']; // Gender!
     lastName: string; // String!
     salary: number; // Float!
   }
   Mutation: {};
   Query: {};
   User: { // root type
-    _id: string; // String!
+    _id: string; // ID!
     email: string; // String!
     password: string; // String!
     userName: string; // String!
@@ -58,7 +59,7 @@ export interface NexusGenUnions {
 
 export type NexusGenRootTypes = NexusGenObjects
 
-export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars
+export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars & NexusGenEnums
 
 export interface NexusGenFieldTypes {
   Auth: { // field return type
@@ -66,10 +67,10 @@ export interface NexusGenFieldTypes {
     user: NexusGenRootTypes['User']; // User!
   }
   Employee: { // field return type
-    _id: string; // String!
+    _id: string; // ID!
     email: string; // String!
     firstName: string; // String!
-    gender: string; // String!
+    gender: NexusGenEnums['Gender']; // Gender!
     lastName: string; // String!
     salary: number; // Float!
   }
@@ -85,7 +86,7 @@ export interface NexusGenFieldTypes {
     getEmployees: NexusGenRootTypes['Employee'][]; // [Employee!]!
   }
   User: { // field return type
-    _id: string; // String!
+    _id: string; // ID!
     email: string; // String!
     password: string; // String!
     userName: string; // String!
@@ -98,10 +99,10 @@ export interface NexusGenFieldTypeNames {
     user: 'User'
   }
   Employee: { // field return type name
-    _id: 'String'
+    _id: 'ID'
     email: 'String'
     firstName: 'String'
-    gender: 'String'
+    gender: 'Gender'
     lastName: 'String'
     salary: 'Float'
   }
@@ -117,7 +118,7 @@ export interface NexusGenFieldTypeNames {
     getEmployees: 'Employee'
   }
   User: { // field return type name
-    _id: 'String'
+    _id: 'ID'
     email: 'String'
     password: 'String'
     userName: 'String'
@@ -129,12 +130,12 @@ export interface NexusGenArgTypes {
     createEmployee: { // args
       email: string; // String!
       firstName: string; // String!
-      gender: string; // String!
+      gender: NexusGenEnums['Gender']; // Gender!
       lastName: string; // String!
       salary: number; // Float!
     }
     deleteEmployee: { // args
-      _id: string; // String!
+      _id: string; // ID!
     }
     login: { // args
       password: string; // String!
@@ -146,17 +147,17 @@ export interface NexusGenArgTypes {
       userName: string; // String!
     }
     updateEmployee: { // args
-      _id: string; // String!
+      _id: string; // ID!
       email?: string | null; // String
       firstName?: string | null; // String
-      gender?: string | null; // String
+      gender?: NexusGenEnums['Gender'] | null; // Gender
       lastName?: string | null; // String
       salary?: number | null; // Float
     }
   }
   Query: {
     getEmployee: { // args
-      _id: string; // String!
+      _id: string; // ID!
     }
   }
 }
@@ -171,7 +172,7 @@ export type NexusGenObjectNames = keyof NexusGenObjects;
 
 export type NexusGenInputNames = never;
 
-export type NexusGenEnumNames = never;
+export type NexusGenEnumNames = keyof NexusGenEnums;
 
 export type NexusGenInterfaceNames = never;
 

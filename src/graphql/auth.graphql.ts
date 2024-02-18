@@ -29,7 +29,7 @@ export const AuthMutation: NexusExtendTypeDef<any> = extendType({
         userName: nonNull(stringArg()),
         password: nonNull(stringArg()),
       },
-      async resolve(parent, args, ctx): Promise<NexusGenObjects['Auth']> {
+      async resolve(_, args, ctx): Promise<NexusGenObjects['Auth']> {
         const { userName, email } = args;
         const password: string = await argon.hash(args.password);
         const user = await ctx.user.create({
@@ -55,7 +55,7 @@ export const AuthMutation: NexusExtendTypeDef<any> = extendType({
         userName: nonNull(stringArg()),
         password: nonNull(stringArg()),
       },
-      async resolve(parent, args, ctx): Promise<NexusGenObjects['Auth']> {
+      async resolve(_, args, ctx): Promise<NexusGenObjects['Auth']> {
         const { userName, password } = args;
 
         const user = await ctx.user.findOne({ userName: userName });

@@ -1,5 +1,5 @@
 import { model, Schema } from 'mongoose';
-import { EmployeeEntity } from '../entities/employee.entity';
+import { EmployeeEntity } from '../entities';
 
 const employeeSchema: Schema<EmployeeEntity> = new Schema({
   firstName: {
